@@ -1,0 +1,39 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+group = 'com.app.java-motion-detector'
+version = '0.0.1'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Java_motion-detector',  
+        	'Implementation-Version': version,
+        	'Main-Class': 'javaopencv.Main'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+build.dependsOn "fatJar"
+
+dependencies {
+	
+	
+	// https://mvnrepository.com/artifact/org.openpnp/opencv
+implementation group: 'org.openpnp', name: 'opencv', version: '2.4.6'
+
+
+
+}
